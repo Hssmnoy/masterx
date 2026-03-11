@@ -120,7 +120,9 @@ const SiteHandlers = {
 
 const { data } = await fetchWithRetry(epUrl)
 
+if(TEST_MODE){
 fs.writeFileSync("debug_ep.html", data)
+}
 
 console.log("EP HTML size:", data.length)
   const $ = cheerio.load(data)
@@ -213,7 +215,9 @@ if(frameMatch){
 }
 
 console.log("EMBED HTML size:", html.length)
+if(TEST_MODE){
 fs.writeFileSync("debug_embed.html", html)
+}
 
   // ⭐ หา m3u8 ใน script
   const match = html.match(/https?:\/\/[^"' ]+\.m3u8[^"' ]*/)
@@ -480,7 +484,9 @@ emptyPageCount = 0;
 
     console.log("HTML size:", catHtml.length);
     console.log("center count:", $cat(".center_lnwphp").length);
-    fs.writeFileSync("debug_category.html", catHtml);
+    if(TEST_MODE){
+fs.writeFileSync("debug_category.html", catHtml);
+}
     
     const articles =
   autoDetect($cat, handler.articleSelectors).toArray();
@@ -549,7 +555,9 @@ if (movie && movie.episodes && movie.episodes.length > 0) {
         await fetchWithRetry(link);
 
       const $detail = cheerio.load(detailHtml);
-	fs.writeFileSync("debug_detail.html", detailHtml);
+	if(TEST_MODE){
+fs.writeFileSync("debug_detail.html", detailHtml);
+}
       const epElements =
         autoDetect($detail, handler.episodeSelectors).toArray();
 	console.log("EP found:", epElements.length)
@@ -700,7 +708,7 @@ for(const file of files){
       let stream = ep.servers[0].url
 
           
-      if(stream && !stream.includes(".m3u8")){
+      if(stream && !stream.includes(".m3u8") && !stream.includes("/qualitys/")){
 
         try{
 
@@ -757,3 +765,4 @@ process.exit(0);
 
 
 })();
+
