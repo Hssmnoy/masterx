@@ -728,5 +728,39 @@
         "servers": []
       }
     ]
+  },
+  {
+    "title": "OVA Yogoreta Kanojo",
+    "link": "https://www.anime-masterx.com/ova-yogoreta-kanojo",
+    "image": "https://www.anime-masterx.com/upload/ova-yogoreta-kanojo.jpg?v=99",
+    "episodes": [
+      {
+        "name": "เข้ากลุ่มลับอนิเมะ",
+        "link": "https://www.facebook.com/groups/AnimeMasterTH",
+        "servers": []
+      },
+      {
+        "name": "แสดงคอมเม้น",
+        "link": "#0",
+        "servers": []
+      }
+    ]
+  },
+  {
+    "title": "Immoral Routine The Animation",
+    "link": "https://www.anime-masterx.com/immoral-routine",
+    "image": "https://www.anime-masterx.com/upload/immoral-routine-the-animation.jpg?v=99",
+    "episodes": [
+      {
+        "name": "เข้ากลุ่มลับอนิเมะ",
+        "link": "https://www.facebook.com/groups/AnimeMasterTH",
+        "servers": []
+      },
+      {
+        "name": "แสดงคอมเม้น",
+        "link": "#0",
+        "servers": []
+      }
+    ]
   }
 ]
