@@ -345,11 +345,6 @@ const autoSave = setInterval(()=>{
 
 for (let page = startPage; page <= (TEST_MODE ? 1 : 150); page++) {
   
-  fs.writeFileSync(
-    progressFile,
-    JSON.stringify({ page: page }, null, 2)
-  );
-
   
   let pageSuccess = false;
 
@@ -658,5 +653,6 @@ process.exit(0);
 
 
 })();
+
 
 
