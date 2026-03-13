@@ -463,9 +463,9 @@ fs.writeFileSync("debug_detail.html", detailHtml);
 
 
         if (movie.episodes.find(x => x.link === epLink)) {
-          console.log("⛔ ตอนซ้ำ หยุดเรื่อง");
-          break;
-        }
+  			console.log("⛔ ตอนซ้ำ ข้าม");
+  			continue;
+		}
 
         console.log("↳ ดึงตอน:", $a.text().trim());
 
@@ -653,6 +653,7 @@ process.exit(0);
 
 
 })();
+
 
 
 
