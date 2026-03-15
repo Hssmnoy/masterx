@@ -111,7 +111,7 @@ const SiteHandlers = {
     episodeSelectors: [
   "a[href*='-ep-']",
   "a[href*='-thai-']",
-  "a[href*='-thai-ep-']"
+  "a[href*='episode']"
 ],
 async getServers(epUrl){
 
