@@ -602,6 +602,10 @@ if (finished) {
 }
 console.log("✅ เสร็จหมวด:",cat.name);
 commitProgress(`update ${cat.slug} finished`)
+
+if(!newEpisodeAdded){
+  console.log("📭 ไม่มีตอนใหม่ ไม่ต้อง build playlist");
+}else{	
 // ==========================
 // BUILD M3U
 // ==========================
