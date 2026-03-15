@@ -579,9 +579,9 @@ catch (err) {
   }
 
   fs.writeFileSync(
-    progressFile,
-    JSON.stringify({ page: page + 1 })
-  );
+  progressFile,
+  JSON.stringify({ page: page })
+);
 
   console.log("💾 บันทึก progress:", page + 1);
 
