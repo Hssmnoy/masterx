@@ -40959,6 +40959,20 @@
             "url": "https://www.anime-masterx.com/embed/24590&multi=link5"
           }
         ]
+      },
+      {
+        "name": "Maoujou de Oyasumi หลับฝันดีนะเจ้าหญิงที่ปราสาทจอมมาร ตอนที่ 12 ซับไทย ตอนจบ",
+        "link": "https://www.anime-masterx.com/maoujou-de-oyasumi-ep-12",
+        "servers": [
+          {
+            "name": "Main",
+            "url": "https://www.anime-masterx.com/embed/25461&multi=link1"
+          },
+          {
+            "name": "Backup",
+            "url": "https://www.anime-masterx.com/embed/25461&multi=link5"
+          }
+        ]
       }
     ]
   }
