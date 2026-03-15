@@ -161,6 +161,49 @@ function getHandler(url) {
 }
 
 // ==========================
+// GET LAST PAGE
+// ==========================
+async function getLastPage(categoryUrl){
+
+  try{
+
+    const { data } = await fetchWithRetry(categoryUrl)
+    const $ = cheerio.load(data)
+
+    let lastPage = 1
+
+    $("a").each((i,el)=>{
+
+      const href = $(el).attr("href")
+      if(!href) return
+
+      const match = href.match(/page\/(\d+)/)
+
+      if(match){
+        const p = parseInt(match[1])
+        if(p > lastPage) lastPage = p
+      }
+
+      const match2 = href.match(/\?number=(\d+)/)
+
+      if(match2){
+        const p = parseInt(match2[1])
+        if(p > lastPage) lastPage = p
+      }
+
+    })
+
+    return lastPage
+
+  }catch(e){
+
+    return 1
+
+  }
+
+}
+
+// ==========================
 // AUTO DETECT HELPERS
 // ==========================
 function autoDetect($, selectors) {
@@ -326,6 +369,9 @@ function saveData(){
 }
 
 const handler = getHandler(cat.url);
+const lastPage = await getLastPage(cat.url)
+console.log("📚 จำนวนหน้าทั้งหมด:", lastPage)
+
 let finished = false;
 let episodeCounter = 0;
 let emptyPageCount = 0;
@@ -343,9 +389,8 @@ const autoSave = setInterval(()=>{
 
 //LOOP
 
-for (let page = startPage; page <= (TEST_MODE ? 1 : 150); page++) {
-  
-  
+for (let page = startPage; page <= (TEST_MODE ? 1 : lastPage); page++) {
+    
   let pageSuccess = false;
 
   try {
@@ -355,7 +400,7 @@ for (let page = startPage; page <= (TEST_MODE ? 1 : 150); page++) {
 if(page === 1){
   pageUrl = cat.url;
 }else{
-  pageUrl = `${cat.url}page/${page}/`;
+  pageUrl = `${cat.url}?number=${page}`;
 }
 
 pageUrl = fixCategoryUrl(pageUrl);
@@ -463,8 +508,11 @@ fs.writeFileSync("debug_detail.html", detailHtml);
 
 
         if (movie.episodes.find(x => x.link === epLink)) {
-  			console.log("⛔ ตอนซ้ำ ข้าม");
-  			continue;
+
+  		console.log("⛔ ตอนซ้ำ หยุดตรวจตอน");
+
+  		break;
+
 		}
 
         console.log("↳ ดึงตอน:", $a.text().trim());
