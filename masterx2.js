@@ -544,14 +544,14 @@ servers = await siteHandler.getServers(epLink);
 
         saveData();
 
-        if (episodeCounter % 50 === 0) {
+       // if (episodeCounter % 50 === 0) {
 
-          console.log("🚀 commit partial");
+       // console.log("🚀 commit partial");
 
-          commitProgress(
-            `update ${cat.slug} episodes ${episodeCounter}`
-          );
-        }
+       // commitProgress(
+       //    `update ${cat.slug} episodes ${episodeCounter}`
+       //   );
+       // }
 
         await randomDelay(120,300);
       }
@@ -584,20 +584,26 @@ catch (err) {
 
   if (pageSuccess) {
 
-    saveData();
+  saveData();
+
+  if(page % 5 === 0){
+
+    console.log("🚀 commit page", page)
 
     commitProgress(
       `update ${cat.slug} page ${page}`
     );
 
-    fs.writeFileSync(
-      progressFile,
-      JSON.stringify({ page: page + 1 })
-    );
-
-    console.log("💾 บันทึก progress:", page + 1);
-
   }
+
+  fs.writeFileSync(
+    progressFile,
+    JSON.stringify({ page: page + 1 })
+  );
+
+  console.log("💾 บันทึก progress:", page + 1);
+
+}
 
   await randomDelay(300,600);
 }
@@ -612,7 +618,7 @@ if (finished) {
   console.log("SCRAPER_STATUS:IN_PROGRESS");
 }
 console.log("✅ เสร็จหมวด:",cat.name);
-
+commitProgress(`update ${cat.slug} finished`)
 // ==========================
 // BUILD M3U
 // ==========================
