@@ -320,25 +320,7 @@ if(!fs.existsSync(JSON_DIR)){
 const progressFile = `${JSON_DIR}/${cat.slug}_progress.json`;
 
 let startPage = 1;
-
-if (fs.existsSync(progressFile)) {
-
-  const saved = JSON.parse(fs.readFileSync(progressFile));
-  startPage = saved.page || 1;
-
-  console.log("🔁 Resume จากหน้า", startPage);
-
-} else {
-
-  // ⭐ เพิ่มตรงนี้
-  fs.writeFileSync(
-    progressFile,
-    JSON.stringify({ page: 1 }, null, 2)
-  );
-
-  console.log("🆕 สร้าง progress ใหม่");
-
-}
+console.log("🆕 เริ่มหน้า 1 ทุกครั้ง");
 
 let currentData=[];
 let currentFilePath=`${JSON_DIR}/${cat.slug}.json`;
@@ -374,7 +356,8 @@ let finished = false;
 let episodeCounter = 0;
 let emptyPageCount = 0;
 let newEpisodeAdded = false;
-	
+let newAnimeFound = false;
+let newEpisodeFound = false;	
 //LOOP
 
 for (let page = startPage; page <= (TEST_MODE ? 1 : lastPage); page++) {
@@ -455,17 +438,18 @@ if (movie && movie.episodes && movie.episodes.length > 0) {
 }
   
       if (!movie) {
-        movie = {
-          title: basic.title,
-          link,
-          image: basic.image || "",
-          episodes: []
-        };
+  movie = {
+    title: basic.title,
+    link,
+    image: basic.image || "",
+    episodes: []
+  };
 
-        currentData.push(movie);
-        oldMap.set(link, movie);
-        
-      }
+  currentData.unshift(movie);
+  oldMap.set(link, movie);
+
+   newAnimeFound = true;
+}
 
       const { data: detailHtml } =
         await fetchWithRetry(link);
@@ -476,8 +460,10 @@ fs.writeFileSync("debug_detail.html", detailHtml);
 }
       const epElements =
         autoDetect($detail, handler.episodeSelectors).toArray();
+let hasNewEpisodeInThisAnime = false;
 	console.log("EP found:", epElements.length)
-	let epCount = 0;
+	
+let epCount = 0;
 
       for (const el2 of epElements) {
 
@@ -496,14 +482,11 @@ if (
 	epCount++
 	if(TEST_MODE && epCount > 1) break
 
-
-        if (movie.episodes.find(x => x.link === epLink)) {
-
-  		console.log("⛔ ตอนซ้ำ หยุดตรวจตอน");
-
-  		break;
-
-		}
+   if (movie.episodes.find(x => x.link === epLink)) {
+    console.log("⛔ ตอนซ้ำ หยุดตรวจตอน");
+    break;
+  }  
+  hasNewEpisodeInThisAnime = true;
 
         console.log("↳ ดึงตอน:", $a.text().trim());
 
@@ -519,12 +502,15 @@ servers = await siteHandler.getServers(epLink);
           console.log("⚠️ server error:", epLink);
         }
 
-        movie.episodes.push({
-          name: $a.text().trim(),
-          link: epLink,
-          servers
-        });
+        movie.episodes.unshift({
+  name: $a.text().trim(),
+  link: epLink,
+  servers
+});
+
 newEpisodeAdded = true;
+newEpisodeFound = true;
+		  
         episodeCounter++;  
 
        // if (episodeCounter % 50 === 0) {
@@ -564,6 +550,11 @@ catch (err) {
   }
 
 }
+// 🔥 ถ้าหน้านี้ไม่มีของใหม่เลย → หยุด
+if (!newAnimeFound && !newEpisodeFound && page === 1) {
+  console.log("🛑 หน้า 1 ไม่มีอะไรใหม่เลย → STOP");
+  break;
+}
 
   if (pageSuccess) {
 
@@ -587,7 +578,9 @@ catch (err) {
   console.log("💾 บันทึก progress:", page + 1);
 
 }
-
+newAnimeFound = false;
+newEpisodeFound = false;
+	
   await randomDelay(300,600);
 }
 
@@ -700,7 +693,4 @@ process.exit(0);
 
 
 })();
-
-
-
 
