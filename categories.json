@@ -28,10 +28,6 @@
     "name": "Movie",
     "slug": "movie",
     "url": "https://www.anime-masterx.com/category/the-movie/"
-  },
-  {
-    "name": "H-Anime",
-    "slug": "hanime",
-    "url": "https://www.anime-masterx.com/category/h-anime/"
   }
+  
 ]
