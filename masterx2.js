@@ -358,9 +358,11 @@ let emptyPageCount = 0;
 let newEpisodeAdded = false;
 let newAnimeFound = false;
 let newEpisodeFound = false;	
+let noUpdatePageCount = 0;
+	
 //LOOP
 
-for (let page = startPage; page <= (TEST_MODE ? 1 : lastPage); page++) {
+for (let page = startPage; page <= (TEST_MODE ? 1 : Math.min(3, lastPage)); page++) {
     
   let pageSuccess = false;
 
@@ -578,6 +580,21 @@ if (!newAnimeFound && !newEpisodeFound && page === 1) {
   console.log("💾 บันทึก progress:", page + 1);
 
 }
+// ❗ เช็คว่าหน้านี้มีของใหม่ไหม
+if (!newAnimeFound && !newEpisodeFound) {
+  noUpdatePageCount++;
+  console.log(`⛔ หน้า ${page} ไม่มีอะไรใหม่ (${noUpdatePageCount}/3)`);
+} else {
+  noUpdatePageCount = 0;
+}
+
+// 🔥 ครบ 3 หน้า → หยุดหมวด
+if (noUpdatePageCount >= 3) {
+  console.log("🛑 3 หน้าแรกไม่มีตอนใหม่ → ข้ามหมวด");
+  break;
+}
+
+// 🔄 reset สำหรับหน้าถัดไป
 newAnimeFound = false;
 newEpisodeFound = false;
 	
