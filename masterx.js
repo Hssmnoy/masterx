@@ -460,8 +460,11 @@ if (movie && movie.episodes && movie.episodes.length > 0) {
 	if(TEST_MODE){
 fs.writeFileSync("debug_detail.html", detailHtml);
 }
-      const epElements =
-        autoDetect($detail, handler.episodeSelectors).toArray();
+      let epElements =
+  autoDetect($detail, handler.episodeSelectors)
+    .toArray()
+    .reverse();
+		 
 let hasNewEpisodeInThisAnime = false;
 	console.log("EP found:", epElements.length)
 	
