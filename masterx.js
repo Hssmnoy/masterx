@@ -513,6 +513,14 @@ servers = await siteHandler.getServers(epLink);
   servers
 });
 
+if (!movie._moved) {
+  const index = currentData.findIndex(x => x.link === movie.link);
+  if (index > 0) {
+    currentData.splice(index, 1);
+    currentData.unshift(movie);
+  }
+  movie._moved = true;
+}		  
 newEpisodeAdded = true;
 newEpisodeFound = true;
 		  
